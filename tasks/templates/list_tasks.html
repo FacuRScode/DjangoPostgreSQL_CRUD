@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django CRUD</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'main.css' %}"">
+</head>
+<body>
+    <h1>Tasks</h1>
+
+    <form action="{% url 'create_task' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="Write a title">
+        <textarea name="description" rows="3" placeholder="Write a description"></textarea>
+        <button>Save</button>
+    </form>
+
+    {% for task in tasks%}
+    <div>
+        <h4>{{task.title}}</h4>
+        <p>{{task.description}}</p>
+        <form action="{% url 'delete_task' task.id %}" method="POST">
+            {% csrf_token %}
+            <button>Delete</button>
+        </form>
+    </div>
+    {% empty %}
+        <h1>No tasks yet</h1>
+    {% endfor %}
+</body>
+</html>
